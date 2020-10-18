@@ -14,24 +14,43 @@ const Button = ({ clickHandler, text }) => (
   <button onClick={clickHandler}>{text}</button>
 );
 
+const Statistics = ({ text, value }) => (
+  <tr>
+    <td>{text}</td>
+    <td>{value}</td>
+  </tr>
+);
+
 const Stats = ({ data }) => {
   let good = data.good,
     bad = data.bad,
     neutral = data.neutral;
   let total = data.good + data.bad + data.neutral;
-  let positive = good / total ?? 0;
+  let positive = (good / total ?? 0) + "%";
   let avg = (1 * good + 0 * neutral + -1 * bad) / total ?? 0;
-  return (
-    <div>
-      <h1>Statistics</h1>
-      <p>Good {good}</p>
-      <p>Neutral {neutral}</p>
-      <p>Bad {bad}</p>
-      <p>All {total}</p>
-      <p>Average {avg}</p>
-      <p>Positive {positive}%</p>
-    </div>
-  );
+  if (total > 0) {
+    return (
+      <div>
+        <h1>Statistics</h1>
+        <table>
+          <tbody>
+            <Statistics text="Good" value={good} />
+            <Statistics text="Neutral" value={neutral} />
+            <Statistics text="Bad" value={bad} />
+            <Statistics text="All" value={total} />
+            <Statistics text="Average" value={avg} />
+            <Statistics text="Positive" value={positive} />
+          </tbody>
+        </table>
+      </div>
+    );
+  } else
+    return (
+      <div>
+        <h1>Statistics</h1>
+        <p>No Feedbacks available yet!</p>
+      </div>
+    );
 };
 
 const App = () => {
