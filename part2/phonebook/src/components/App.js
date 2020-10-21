@@ -1,12 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Filter from "./Filter";
 import Persons from "./Persons";
 import PersonForm from "./PersonForm";
+import axios from "axios";
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: "Arto Hellas", phone: "123-456789" },
-  ]);
+  const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterString, setFilterString] = useState("");
@@ -37,6 +36,14 @@ const App = () => {
   const handleFiltering = (e) => {
     setFilterString(e.target.value);
   };
+
+  useEffect(() => {
+    console.log("effect");
+    axios.get("http://localhost:3001/persons").then((res) => {
+      console.log("promise fulfilled");
+      setPersons(res.data);
+    });
+  }, []);
 
   return (
     <div>
