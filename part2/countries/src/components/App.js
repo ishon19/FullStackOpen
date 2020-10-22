@@ -8,6 +8,8 @@ const App = () => {
   const [filteredResponse, setFilteredResponse] = useState([]);
   const [showDetails, setShowDetails] = useState(false);
   const [countryObj, setCountryObj] = useState({});
+  const [weatherData, setWeatherData] = useState({});
+  const api_key = process.env.REACT_APP_API_KEY;
 
   const showButtonClickHandler = (countryObj) => {
     setShowDetails(true);
@@ -43,6 +45,26 @@ const App = () => {
 
   useEffect(effectHandler, []);
 
+  const effectHook = () => {
+    const params = {
+      access_key: api_key,
+      query: countryObj.capital,
+    };
+
+    axios
+      .get("http://api.weatherstack.com/current", { params })
+      .then((response) => {
+        const apiResponse = response.data;
+        console.log("Weather Data:", apiResponse);
+        setWeatherData(apiResponse);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  useEffect(effectHook, [countryObj]);
+
   return (
     <div>
       <Search onChangeHandler={searchHandler} />
@@ -51,6 +73,7 @@ const App = () => {
         showButtonClickHandler={showButtonClickHandler}
         showDetails={showDetails}
         countryObj={countryObj}
+        weatherData={weatherData}
       />
     </div>
   );
