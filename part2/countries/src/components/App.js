@@ -28,6 +28,10 @@ const App = () => {
       : [];
     console.log("filtered Countries: ", filteredCountries);
     setFilteredResponse(filteredCountries);
+    if(filteredCountries.length===1) {
+      setShowDetails(true);
+      setCountryObj(filteredCountries[0]);
+    }
   };
 
   const effectHandler = () => {
@@ -46,9 +50,10 @@ const App = () => {
   useEffect(effectHandler, []);
 
   const effectHook = () => {
+    console.log("weather effect", filteredResponse[0]);
     const params = {
       access_key: api_key,
-      query: countryObj.capital,
+      query: countryObj?.capital || '',
     };
 
     axios
