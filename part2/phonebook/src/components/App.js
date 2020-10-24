@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
-import Filter from "./Filter";
-import Persons from "./Persons";
-import PersonForm from "./PersonForm";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Filter from "./Filter";
+import PersonForm from "./PersonForm";
+import Persons from "./Persons";
+import contactService from "../services/serverService";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -15,13 +16,36 @@ const App = () => {
     let contactObj = { name: newName, phone: newNumber };
 
     //check if the name already exists
-    let duplicate = persons.filter((person) => person.name === newName);
+    let duplicate = persons.filter((person) => person.name === contactObj.name);
     if (duplicate.length === 0) {
-      setPersons(persons.concat(contactObj));
-      setNewName("");
-      setNewNumber("");
+      contactService
+        .addContact(contactObj)
+        .then((data) => {
+          setPersons(persons.concat(data));
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((err) => console.log(err));
     } else {
-      alert(`${newName} already exists in the Phonebook`);
+      if (
+        window.confirm(
+          alert(
+            `${newName} already exists in the Phonebook, replace the old number with new one?`
+          )
+        )
+      ) {
+        contactService
+          .updateContact(duplicate[0].id, contactObj)
+          .then((updatedData) => {
+            let modifiedList = persons.map((person) =>
+              person.id === updatedData.id ? updatedData : person
+            );
+            setPersons(modifiedList);
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((err) => console.log(err));
+      }
     }
   };
 
@@ -39,11 +63,29 @@ const App = () => {
 
   useEffect(() => {
     console.log("effect");
-    axios.get("http://localhost:3001/persons").then((res) => {
-      console.log("promise fulfilled");
-      setPersons(res.data);
-    });
+    contactService
+      .getAll()
+      .then((data) => {
+        console.log("promise fulfilled");
+        setPersons(data);
+      })
+      .catch((err) => console.log(err));
   }, []);
+
+  const deleteClickHandler = (id) => {
+    let person = persons.find((person) => person.id === id);
+    if (window.confirm(`Do you want to delete ${person.name}`)) {
+      contactService
+        .deleteContact(id)
+        .then((data) => {
+          let newContactList = persons.filter((person) => person.id !== id);
+          setPersons(newContactList);
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((err) => console.log(err));
+    }
+  };
 
   return (
     <div>
@@ -58,7 +100,11 @@ const App = () => {
         defaultNumber={newNumber}
       />
       <h2>Numbers</h2>
-      <Persons data={persons} filterString={filterString} />
+      <Persons
+        data={persons}
+        filterString={filterString}
+        deleteClickHandler={deleteClickHandler}
+      />
     </div>
   );
 };

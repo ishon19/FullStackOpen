@@ -1,6 +1,27 @@
 import React from "react";
 
-const Persons = ({ data, filterString }) => {
+const Persons = ({ data, filterString, deleteClickHandler }) => {
+  const displayAllContacts = (data) => {
+    return data.map((person) => (
+      <p key={person.name}>
+        {person.name} {person.phone}{" "}
+        <button onClick={() => deleteClickHandler(person.id)}>delete</button>
+      </p>
+    ));
+  };
+
+  const displayFilteredContacts = (data, filterString) => {
+    let filteredList = data.filter((person) =>
+      person.name.toLowerCase().includes(filterString.toLowerCase())
+    );
+    return filteredList.map((person) => (
+      <p key={person.name}>
+        {person.name} {person.phone}{" "}
+        <button onClick={() => deleteClickHandler(person.id)}>delete</button>
+      </p>
+    ));
+  };
+
   return (
     <div>
       {filterString.trim() === ""
@@ -8,25 +29,6 @@ const Persons = ({ data, filterString }) => {
         : displayFilteredContacts(data, filterString)}
     </div>
   );
-};
-
-const displayAllContacts = (data) => {
-  return data.map((person) => (
-    <p key={person.name}>
-      {person.name} {person.phone}
-    </p>
-  ));
-};
-
-const displayFilteredContacts = (data, filterString) => {
-  let filteredList = data.filter((person) =>
-    person.name.toLowerCase().includes(filterString.toLowerCase())
-  );
-  return filteredList.map((person) => (
-    <p key={person.name}>
-      {person.name} {person.phone}
-    </p>
-  ));
 };
 
 export default Persons;
