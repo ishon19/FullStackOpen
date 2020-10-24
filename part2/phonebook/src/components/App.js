@@ -1,15 +1,26 @@
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import Filter from "./Filter";
 import PersonForm from "./PersonForm";
 import Persons from "./Persons";
 import contactService from "../services/serverService";
+import Notification from "./Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filterString, setFilterString] = useState("");
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null);
+
+  const displayNotification = (message, type) => {
+    setMessage(message);
+    setMessageType(type);
+    setTimeout(() => {
+      setMessage(null);
+      setMessageType(null);
+    }, 5000);
+  };
 
   const addContact = (event) => {
     event.preventDefault();
@@ -24,8 +35,11 @@ const App = () => {
           setPersons(persons.concat(data));
           setNewName("");
           setNewNumber("");
+          displayNotification(`Added ${data.name}`, "success");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     } else {
       if (
         window.confirm(
@@ -43,8 +57,15 @@ const App = () => {
             setPersons(modifiedList);
             setNewName("");
             setNewNumber("");
+            displayNotification(`Updated ${updatedData.name}`, "success");
           })
-          .catch((err) => console.log(err));
+          .catch((err) => {
+            console.log(err);
+            displayNotification(
+              `Information of ${duplicate[0].name} has already been removed from the server`,
+              "error"
+            );
+          });
       }
     }
   };
@@ -69,7 +90,9 @@ const App = () => {
         console.log("promise fulfilled");
         setPersons(data);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   const deleteClickHandler = (id) => {
@@ -83,13 +106,16 @@ const App = () => {
           setNewName("");
           setNewNumber("");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} messageType={messageType} />
       <Filter eventHandler={handleFiltering} value={filterString} />
       <h2>Add a new</h2>
       <PersonForm
