@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     id: 1,
@@ -38,6 +40,52 @@ app.get("/api/persons/:id", (request, response) => {
   } else {
     response.status(404).end();
   }
+});
+
+app.delete("/api/persons/:id", (request, response) => {
+  const id = Number(request.params.id);
+  persons = persons.filter((person) => person.id !== id);
+  response.status(204).end();
+});
+
+const generateId = () => {
+  return Math.floor(Math.random() * 1000 + 1);
+};
+
+app.post("/api/persons", (request, response) => {
+  console.log("[POST Request] ", request.body);
+  const body = request.body;
+  if (!body.name) {
+    return response.status(400).json({
+      error: "Name missing",
+    });
+  } else if (!body.phone) {
+    return response.status(400).json({
+      error: "Phone Number missing",
+    });
+  }
+
+  //search if duplicate name exists in the list
+  let name = body.name;
+
+  let duplicates = persons.filter(
+    (person) => person.name.toLowerCase() === name.toLowerCase()
+  );
+
+  if (duplicates.length) {
+    return response.status(400).json({
+      error: "name must be unique",
+    });
+  }
+
+  let person = {
+    id: generateId(),
+    name: name,
+    phone: body.phone,
+  };
+
+  persons = persons.concat(person);
+  response.json(person);
 });
 
 const PORT = 3001;
