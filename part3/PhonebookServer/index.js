@@ -85,8 +85,9 @@ app.post("/api/persons", (request, response) => {
 
   //search if duplicate name exists in the list
   let name = body.name;
+  let phone = body.phone;
 
-  let duplicates = persons.filter(
+  /*   let duplicates = persons.filter(
     (person) => person.name.toLowerCase() === name.toLowerCase()
   );
 
@@ -94,16 +95,18 @@ app.post("/api/persons", (request, response) => {
     return response.status(400).json({
       error: "name must be unique",
     });
-  }
+  } */
 
-  let person = {
+  let person = new Person({
     id: generateId(),
     name: name,
-    phone: body.phone,
-  };
+    phone: phone,
+  });
 
-  persons = persons.concat(person);
-  response.json(person);
+  //persons = persons.concat(person);
+  person.save().then((savedPerson) => {
+    response.json(savedPerson);
+  });
 });
 
 const PORT = process.env.PORT || 3001;
