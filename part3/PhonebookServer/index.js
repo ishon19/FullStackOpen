@@ -133,14 +133,14 @@ app.post("/api/persons", (request, response) => {
 app.put("/api/persons/:id", (request, response) => {
   let name = request.body.name;
   let phone = request.body.phone;
-  let person = new Person({
+  let person = {
     name: name,
     phone: phone,
-  });
-  Person.findByIdAndUpdate(request.params.id, person)
+  };
+  Person.findByIdAndUpdate(request.params.id, person, { new: true })
     .then((updatedPerson) => {
       console.log("Updated User", updatedPerson);
-      return response.json(updatedPerson);
+      response.json(updatedPerson);
     })
     .catch((error) => next(error));
 });
