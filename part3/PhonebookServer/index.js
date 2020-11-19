@@ -130,6 +130,7 @@ app.post("/api/persons", (request, response) => {
 
 app.put("/api/persons/:id", (request, response) => {
   let name = request.body.name;
+  let phone = request.body.phone;
   let person = new Person({
     name: name,
     phone: phone,
