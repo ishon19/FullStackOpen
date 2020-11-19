@@ -70,7 +70,7 @@ app.get("/api/persons/:id", (request, response) => {
   } else {
     response.status(404).end();
   } */
-  Person.find({ id: request.params.id })
+  Person.findOne({ id: request.params.id })
     .then((person) => {
       console.log("Person: ", person);
       return response.json(person);
