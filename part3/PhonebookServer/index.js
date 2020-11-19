@@ -3,6 +3,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 const Person = require("./models/person");
+const { update } = require("./models/person");
 
 app.use(express.json());
 app.use(cors());
@@ -117,7 +118,6 @@ app.post("/api/persons", (request, response) => {
     .catch((error) => next(error));
 
   let person = new Person({
-    id: generateId(),
     name: name,
     phone: phone,
   });
@@ -126,6 +126,17 @@ app.post("/api/persons", (request, response) => {
   person.save().then((savedPerson) => {
     response.json(savedPerson);
   });
+});
+
+app.put("/api/persons/:id", (request, response) => {
+  let name = request.body.name;
+  let person = new Person({
+    name: name,
+    phone: phone,
+  });
+  Person.findByIdAndUpdate(request.params.id, person)
+    .then((updatedPerson) => console.log("Updated User", updatedPerson))
+    .catch((error) => next(error));
 });
 
 const PORT = process.env.PORT || 3001;
