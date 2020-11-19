@@ -3,7 +3,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 const Person = require("./models/person");
-const person = require("./models/person");
 
 app.use(express.json());
 app.use(cors());
@@ -18,6 +17,15 @@ app.use(
     ":method :url :status :res[content-length] - :response-time ms :payload"
   )
 );
+
+//Error Handling middleware
+const errorHandler = (error, request, response, next) => {
+  console.log("[ErrorHandler] An Error Occured: ", error.message);
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "Malformed id" });
+  }
+  next(error);
+};
 
 let persons = [
   {
@@ -61,9 +69,12 @@ app.get("/api/persons/:id", (request, response) => {
 });
 
 app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
+  /* const id = Number(request.params.id);
   persons = persons.filter((person) => person.id !== id);
-  response.status(204).end();
+  response.status(204).end(); */
+  Person.findByIdAndRemove(request.params.id)
+    .then((result) => result.status(204).end())
+    .catch((error) => next(error));
 });
 
 const generateId = () => {
@@ -96,6 +107,13 @@ app.post("/api/persons", (request, response) => {
       error: "name must be unique",
     });
   } */
+
+  //Check if the person already exists
+  Person.findOne({ name: name })
+    .then((person) => {
+      console.log("Found a match: ", person.name);
+    })
+    .catch((error) => next(error));
 
   let person = new Person({
     id: generateId(),
