@@ -138,7 +138,10 @@ app.put("/api/persons/:id", (request, response) => {
     phone: phone,
   });
   Person.findByIdAndUpdate(request.params.id, person)
-    .then((updatedPerson) => console.log("Updated User", updatedPerson))
+    .then((updatedPerson) => {
+      console.log("Updated User", updatedPerson);
+      return response.json(updatedPerson);
+    })
     .catch((error) => next(error));
 });
 
