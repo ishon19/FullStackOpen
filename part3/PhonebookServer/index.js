@@ -51,11 +51,12 @@ app.get("/api/persons", (request, response) => {
 });
 
 app.get("/info", (request, response) => {
-  let peopleCount = Person.find({}).then(result => result.length);
-  let date = new Date();
-  response.send(
-    `<p>PhoneBook has info for ${peopleCount} people</p><p>${date}</p>`
-  );
+  Person.find({}).then((result) => {
+    let date = new Date();
+    response.send(
+      `<p>PhoneBook has info for ${result.length} people</p><p>${date}</p>`
+    );
+  });
 });
 
 app.get("/api/persons/:id", (request, response) => {
