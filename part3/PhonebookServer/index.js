@@ -28,6 +28,8 @@ const errorHandler = (error, request, response, next) => {
   next(error);
 };
 
+app.use(errorHandler);
+
 let persons = [
   {
     id: 1,
