@@ -79,7 +79,7 @@ const generateId = () => {
   return Math.floor(Math.random() * 1000 + 1);
 };
 
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
   console.log("[POST Request] ", request.body);
   const body = request.body;
   if (!body.name) {
