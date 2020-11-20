@@ -39,7 +39,7 @@ const App = () => {
         })
         .catch((err) => {
           console.log(err.response);
-          displayNotification(`Error: ${err.response}`, "error");
+          displayNotification(`Error: ${err.response.data.error}`, "error");
         });
     } else {
       if (
@@ -62,7 +62,7 @@ const App = () => {
           })
           .catch((err) => {
             console.log(err.response);
-            displayNotification(`Error: ${err.response}`, "error");
+            displayNotification(`Error: ${err.response.data.error}`, "error");
           });
       }
     }
@@ -90,7 +90,7 @@ const App = () => {
       })
       .catch((err) => {
         console.log(err.response);
-        displayNotification(`Error: ${err.response}`, "error");
+        displayNotification(`Error: ${err.response.data.error}`, "error");
       });
   }, []);
 
@@ -107,7 +107,7 @@ const App = () => {
         })
         .catch((err) => {
           console.log(err.response);
-          displayNotification(`Error: ${err.response}`, "error");
+          displayNotification(`Error: ${err.response.data.error}`, "error");
         });
     }
   };
