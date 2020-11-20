@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const uniqueValidator = require("mongoose-unique-validator");
 
 if (process.argv.length < 3) {
   console.log("Kindly enter the password atleast");
@@ -19,10 +20,19 @@ mongoose.connect(url, {
 });
 
 const personSchema = mongoose.Schema({
-  name: String,
-  phone: Number,
+  name: { type: String, required: true, unique: true },
+  phone: { type: Number, required: true },
 });
 
+personSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString();
+    delete returnedObject._id;
+    delete returnedObject.__v;
+  },
+});
+
+personSchema.plugin(uniqueValidator);
 const Person = mongoose.model("Person", personSchema);
 
 if (name === undefined && phone === undefined) {
@@ -45,3 +55,9 @@ if (name === undefined && phone === undefined) {
     mongoose.connection.close();
   });
 }
+
+//find the person
+Person.findOne({ name: name }).then((response) => {
+  if (response) console.log(response);
+  mongoose.connection.close();
+});

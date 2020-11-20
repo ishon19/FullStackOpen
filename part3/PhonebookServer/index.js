@@ -19,17 +19,6 @@ app.use(
   )
 );
 
-//Error Handling middleware
-const errorHandler = (error, request, response, next) => {
-  console.log("[ErrorHandler] An Error Occured: ", error.message);
-  if (error.name === "CastError") {
-    return response.status(400).send({ error: "Malformed id" });
-  }
-  next(error);
-};
-
-app.use(errorHandler);
-
 let persons = [
   {
     id: 1,
@@ -118,13 +107,6 @@ app.post("/api/persons", (request, response) => {
     });
   } */
 
-  //Check if the person already exists
-  Person.findOne({ name: name })
-    .then((person) => {
-      console.log("Found a match: ", person.name);
-    })
-    .catch((error) => next(error));
-
   let person = new Person({
     name: name,
     phone: phone,
@@ -150,6 +132,19 @@ app.put("/api/persons/:id", (request, response) => {
     })
     .catch((error) => next(error));
 });
+
+//Error Handling middleware
+const errorHandler = (error, request, response, next) => {
+  console.log("[ErrorHandler] An Error Occured: ", error.message);
+  if (error.name === "CastError") {
+    return response.status(400).send({ error: "Malformed id" });
+  } else if (error.name === "ValidationError") {
+    return response.status(400).json({ error: error.message });
+  }
+  next(error);
+};
+
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
