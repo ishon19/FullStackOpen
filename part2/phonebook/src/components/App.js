@@ -39,6 +39,7 @@ const App = () => {
         })
         .catch((err) => {
           console.log(err);
+          displayNotification(`Error: ${err}`, "error");
         });
     } else {
       if (
@@ -61,10 +62,7 @@ const App = () => {
           })
           .catch((err) => {
             console.log(err);
-            displayNotification(
-              `Information of ${duplicate[0].name} has already been removed from the server`,
-              "error"
-            );
+            displayNotification(`Error: ${err}`, "error");
           });
       }
     }
@@ -92,6 +90,7 @@ const App = () => {
       })
       .catch((err) => {
         console.log(err);
+        displayNotification(`Error: ${err}`, "error");
       });
   }, []);
 
@@ -108,6 +107,7 @@ const App = () => {
         })
         .catch((err) => {
           console.log(err);
+          displayNotification(`Error: ${err}`, "error");
         });
     }
   };
