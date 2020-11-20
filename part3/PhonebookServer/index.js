@@ -3,7 +3,6 @@ const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 const Person = require("./models/person");
-const { update } = require("./models/person");
 
 app.use(express.json());
 app.use(cors());
@@ -118,7 +117,10 @@ app.post("/api/persons", (request, response) => {
     .then((savedPerson) => {
       response.json(savedPerson);
     })
-    .catch((error) => next(error));
+    .catch((error) => {
+      console.log("Error while saving");
+      next(error);
+    });
 });
 
 app.put("/api/persons/:id", (request, response) => {
