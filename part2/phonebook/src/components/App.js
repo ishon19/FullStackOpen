@@ -38,8 +38,8 @@ const App = () => {
           displayNotification(`Added ${data.name}`, "success");
         })
         .catch((err) => {
-          console.log(err);
-          displayNotification(`Error: ${err}`, "error");
+          console.log(err.response);
+          displayNotification(`Error: ${err.response}`, "error");
         });
     } else {
       if (
@@ -61,8 +61,8 @@ const App = () => {
             displayNotification(`Updated ${updatedData.name}`, "success");
           })
           .catch((err) => {
-            console.log(err);
-            displayNotification(`Error: ${err}`, "error");
+            console.log(err.response);
+            displayNotification(`Error: ${err.response}`, "error");
           });
       }
     }
@@ -89,8 +89,8 @@ const App = () => {
         setPersons(data);
       })
       .catch((err) => {
-        console.log(err);
-        displayNotification(`Error: ${err}`, "error");
+        console.log(err.response);
+        displayNotification(`Error: ${err.response}`, "error");
       });
   }, []);
 
@@ -106,8 +106,8 @@ const App = () => {
           setNewNumber("");
         })
         .catch((err) => {
-          console.log(err);
-          displayNotification(`Error: ${err}`, "error");
+          console.log(err.response);
+          displayNotification(`Error: ${err.response}`, "error");
         });
     }
   };
