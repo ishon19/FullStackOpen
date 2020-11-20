@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
@@ -18,7 +20,7 @@ app.use(
   )
 );
 
-let persons = [
+/* let persons = [
   {
     id: 1,
     name: "Shreyans",
@@ -29,7 +31,7 @@ let persons = [
     name: "Test",
     number: 1234569,
   },
-];
+]; */
 
 app.get("/", (request, response) => {
   response.send("<h1>App Home</h1>");
@@ -50,7 +52,7 @@ app.get("/info", (request, response) => {
   });
 });
 
-app.get("/api/persons/:id", (request, response) => {
+app.get("/api/persons/:id", (request, response, next) => {
   /* const id = Number(request.params.id);
   const person = persons.find((person) => person.id === id);
   if (person) {
@@ -66,7 +68,7 @@ app.get("/api/persons/:id", (request, response) => {
     .catch((error) => next(error));
 });
 
-app.delete("/api/persons/:id", (request, response) => {
+app.delete("/api/persons/:id", (request, response, next) => {
   /* const id = Number(request.params.id);
   persons = persons.filter((person) => person.id !== id);
   response.status(204).end(); */
@@ -75,9 +77,9 @@ app.delete("/api/persons/:id", (request, response) => {
     .catch((error) => next(error));
 });
 
-const generateId = () => {
+/* const generateId = () => {
   return Math.floor(Math.random() * 1000 + 1);
-};
+}; */
 
 app.post("/api/persons", (request, response, next) => {
   console.log("[POST Request] ", request.body);
@@ -123,7 +125,7 @@ app.post("/api/persons", (request, response, next) => {
     });
 });
 
-app.put("/api/persons/:id", (request, response) => {
+app.put("/api/persons/:id", (request, response, next) => {
   let name = request.body.name;
   let phone = request.body.phone;
   let person = {
