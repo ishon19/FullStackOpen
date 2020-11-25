@@ -1,3 +1,5 @@
+const _ = require("lodash");
+
 const dummy = (blogs) => {
   return 1;
 };
@@ -9,23 +11,32 @@ const totalLikes = (blogs) => {
 };
 
 const favoriteBlog = (blogs) => {
-  let favouriteBlogObj = { title: "", author: "", likes: 0 };
-  let maxLikes = -1;
-  let favIndex = -1;
-  blogs.map((blog, index) => {
-    if (blog.likes > maxLikes) {
-      maxLikes = blog.likes;
-      favIndex = index;
-    }
-  });
-
-  if (maxLikes !== -1 && favIndex !== -1) {
-    favouriteBlogObj.title = blogs[favIndex]["title"];
-    favouriteBlogObj.author = blogs[favIndex]["author"];
-    favouriteBlogObj.likes = blogs[favIndex]["likes"];
-  }
-
-  return favouriteBlogObj;
+  const favObj = _.maxBy(blogs, "likes");
+  return { title: favObj.title, author: favObj.author, likes: favObj.likes };
 };
 
-module.exports = { dummy, totalLikes, favoriteBlog };
+const mostBlogs = (blogs) => {
+  const mostBlogsBy = _.maxBy(blogs, "author");
+  const blogCount = blogs.filter((blog) => blog.author === mostBlogsBy.author);
+  return { author: mostBlogsBy.author, blogs: blogCount.length };
+};
+
+const mostLikes = (blogs) => {
+  let authorLikeMap = {};
+  blogs.forEach((blog) => {
+    // eslint-disable-next-line no-prototype-builtins
+    if (authorLikeMap.hasOwnProperty(blog.author)) {
+      //entry found
+      authorLikeMap[`${blog.author}`] += blog.likes;
+    } else {
+      //new entry
+      authorLikeMap[`${blog.author}`] = blog.likes;
+    }
+  });
+  const mostLikesBy = Object.entries(authorLikeMap).filter(
+    (arr) => arr[1] === _.max(Object.values(authorLikeMap))
+  )[0];
+  return { author: mostLikesBy[0], likes: mostLikesBy[1] };
+};
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes };
