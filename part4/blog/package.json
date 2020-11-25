@@ -4,9 +4,9 @@
   "description": "Blog App",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "jest --verbose"
   },
   "keywords": [
     "Node",
@@ -21,6 +21,8 @@
     "mongoose": "^5.10.15"
   },
   "devDependencies": {
+    "eslint": "^7.14.0",
+    "jest": "^26.6.3",
     "nodemon": "^2.0.6"
   }
 }
