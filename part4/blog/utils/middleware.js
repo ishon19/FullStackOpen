@@ -20,12 +20,22 @@ const errorHandler = (error, request, response, next) => {
   } else if (error.name === "ValidationError") {
     return response.status(400).json({ error: error.message });
   }
-
   next(error);
+};
+
+const tokenExtractor = (request, response, next) => {
+  const authorization = request.get("authorization");
+  let token = null;
+  if (authorization && authorization.toLowerCase().startsWith("bearer")) {
+    token = authorization.substring(7);
+  }
+  request.token = token;
+  next();
 };
 
 module.exports = {
   requestLogger,
   unknownEndpoint,
   errorHandler,
+  tokenExtractor,
 };
