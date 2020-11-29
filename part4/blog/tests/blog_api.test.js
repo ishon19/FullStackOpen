@@ -32,11 +32,13 @@ test("a new blog can be posted", async () => {
     likes: 3,
   };
 
-  await api
+  const result = await api
     .post("/api/blogs")
     .send(testPost)
     .expect(201)
     .expect("Content-Type", /application\/json/);
+
+  console.log("Response: ", result.body);
 
   const updatedBlogs = await apiHelper.getAllBlogs();
   expect(updatedBlogs).toHaveLength(helper.blogs.length + 1);
@@ -79,6 +81,31 @@ test("blogs can be updated", async () => {
     likes: 11,
   };
   await api.put(`/api/blogs/${id}`).send(updatedObject).expect(204);
+});
+
+test("Invalid request for users is responded with errors", async () => {
+  const usersAtStart = await apiHelper.getAllUsers();
+  //username and password missing from the request
+  const sampleRequest = {
+    name: "Shreyans Pathak",
+  };
+
+  await api.post("/api/users").send(sampleRequest).expect(400);
+
+  const userListAtEnd = await apiHelper.getAllUsers();
+  expect(usersAtStart).toHaveLength(userListAtEnd.length);
+});
+
+test("duplicate username is responded with error", async () => {
+  const sampleRequest = {
+    username: "shreyans",
+    name: "Shreyans Pathak",
+    password: "mypass",
+  };
+
+  const response = await api.post("/api/users").send(sampleRequest);
+  console.log("Response", response.error.text);
+  expect(response.error.text).toContain("ValidationError");
 });
 
 afterAll(() => {

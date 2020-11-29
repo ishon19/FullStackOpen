@@ -1,9 +1,10 @@
 /* eslint-disable no-prototype-builtins */
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
+const User = require("../models/user");
 
 blogsRouter.get("/", async (request, response) => {
-  const blogs = await Blog.find({});
+  const blogs = await Blog.find({}).populate("user");
   response.json(blogs);
 });
 
@@ -17,8 +18,16 @@ blogsRouter.post("/", async (request, response) => {
   if (!toSave.hasOwnProperty("likes")) {
     toSave = { ...toSave, likes: 0 };
   }
+
+  const user = await User.findById(toSave.user);
+ 
+  //push the user information
+  toSave.user = user._id;
+
   const blog = new Blog(toSave);
   const result = await blog.save();
+  user.blogs = user.blogs.concat(result._id);
+  await user.save();
   response.status(201).json(result);
 });
 
