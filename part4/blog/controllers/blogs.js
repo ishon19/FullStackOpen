@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 /* eslint-disable no-prototype-builtins */
 const blogsRouter = require("express").Router();
 const Blog = require("../models/blog");
@@ -22,11 +23,13 @@ blogsRouter.post("/", async (request, response) => {
 
   //token validation
   console.log("Token for verification: ", request.token);
+  if (!request.token) {
+    return response.status(401).json({ error: "Token Missing" });
+  }
   const decodedToken = jwt.verify(request.token, process.env.SECRET);
   if (!decodedToken.id) {
-    return response.status(401).json({ error: "Invalid token" });
+    return response.status(401).json({ error: "Token Invalid" });
   }
-
   const user = await User.findById(decodedToken.id);
 
   //push the user information
@@ -40,7 +43,28 @@ blogsRouter.post("/", async (request, response) => {
 });
 
 blogsRouter.delete("/:id", async (request, response) => {
-  await Blog.findByIdAndRemove(request.params.id);
+  const blogIDtoDelete = request.params.id;
+
+  //check if a valid token exists for the user
+  const token = request.token;
+  if (!token) {
+    return response.status(401).json({ error: "token missing" });
+  }
+  const decodedToken = await jwt.verify(token, process.env.SECRET);
+
+  //search the blog and find the user
+  const blog = await Blog.findById(blogIDtoDelete);
+  console.log("Blog: ", blog);
+
+  //the the decoded userid and the blog creators id match then only proceed
+  if (
+    decodedToken.id.toString().toLowerCase() !==
+    blog.user.toString().toLowerCase()
+  ) {
+    return response.status(401).json({ error: "user not authorized" });
+  }
+
+  await Blog.findByIdAndRemove(blogIDtoDelete);
   response.status(204).end();
 });
 

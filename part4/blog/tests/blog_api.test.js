@@ -26,22 +26,41 @@ test("check if the id exists", async () => {
 
 test("a new blog can be posted", async () => {
   const testPost = {
-    title: "Test Post",
-    author: "Shreyans",
+    title: "Another test post",
+    author: "Honey",
     url: "http://google.co.in",
     likes: 3,
+    user: "5fc3c3e5b5ffcc1141f0a295",
   };
 
-  const result = await api
+  await api
     .post("/api/blogs")
+    .set(
+      "Authorization",
+      "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InNoYXNod2F0IiwiaWQiOiI1ZmMzYzNlNWI1ZmZjYzExNDFmMGEyOTUiLCJpYXQiOjE2MDY2NjU0NzF9.z8ty5kdvU24PtDasF4KRK1m3LiLDO5XsMWcnMF1Hqns"
+    )
     .send(testPost)
     .expect(201)
     .expect("Content-Type", /application\/json/);
 
-  console.log("Response: ", result.body);
-
   const updatedBlogs = await apiHelper.getAllBlogs();
   expect(updatedBlogs).toHaveLength(helper.blogs.length + 1);
+});
+
+test("fails with 401 when token missing", async () => {
+  const testPost = {
+    title: "Another test post",
+    author: "Honey",
+    url: "http://google.co.in",
+    likes: 3,
+    user: "5fc3c3e5b5ffcc1141f0a295",
+  };
+
+  await api
+    .post("/api/blogs")
+    .send(testPost)
+    .expect(401)
+    .expect("Content-Type", /application\/json/);
 });
 
 test("likes has value 0 if missing", async () => {
