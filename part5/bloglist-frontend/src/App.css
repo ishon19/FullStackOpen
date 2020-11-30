@@ -1,3 +1,8 @@
+html {
+  font-family: "Cantarell", sans-serif;
+  font-size: 15px;
+}
+
 .App {
   text-align: center;
 }
@@ -14,13 +19,13 @@
 }
 
 .App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  background-color: #a96363;
+  max-height: 10vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  font-size: calc(5px + 2vmin);
   color: white;
 }
 
@@ -35,4 +40,74 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+.card {
+  margin: 2% 2% 2% 2%;
+  display: block;
+  border: 0.5px solid black;
+  border-radius: 10px;
+  padding: 3%;
+  width: 70vw;
+  background: #e2dede;
+  box-shadow: 0.5rem 0.4rem 1rem 0.1rem #969696;
+  font-style: italic;
+}
+
+.card:hover {
+  background: #dad7d7;
+}
+
+.loginform {
+  border: 0.5px solid black;
+  padding: 2%;
+  margin: 3% 3%;
+  text-align: center;
+  display: block;
+  box-shadow: 0.5rem 0.4rem 1rem 0.1rem #969696;
+  align-content: center;
+  border-radius: 0.5rem;
+}
+
+.btn {
+  background-color: #415cf2;
+  max-width: fit-content;
+  color: white;
+  padding: 1.5%;
+  text-transform: uppercase;
+  border-radius: 1rem;
+  box-shadow: 0.5rem 0.4rem 1rem 0.1rem #969696;
+}
+
+.btn:hover {
+  background-color: #1638fa;
+}
+
+input {
+  margin: 2% 2% 2% 2%;
+}
+
+label {
+  max-width: fit-content;
+  font-weight: 500;
+}
+
+.error {
+  height: 5vh;
+  margin: 2% 2% 2% 2%;
+  text-align: center;
+  border: 2px solid red;
+  border-radius: 20px;
+  font-weight: bold;
+  background-color: #fa8282;
+}
+
+.success {
+  height: 5vh;
+  margin: 2% 2% 2% 2%;
+  text-align: center;
+  border: 2px solid green;
+  border-radius: 20px;
+  font-weight: bold;
+  background-color: #94f082;
 }
