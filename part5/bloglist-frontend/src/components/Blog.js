@@ -2,7 +2,7 @@ import React from "react";
 const Blog = ({ blog }) => (
   <div>
     <li>
-      {blog.title} {blog.author}
+      {blog.title} - <b>{blog.author}</b>
     </li>
   </div>
 );
