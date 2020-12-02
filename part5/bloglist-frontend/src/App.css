@@ -43,12 +43,13 @@ html {
 }
 
 .card {
-  margin: 4% 2% 2% 2%;
+  margin: 10% 2% 2% 2%;
   display: block;
   /* border: 0.5px solid black; */
+  overflow-x: scroll;
   border-radius: 10px;
   padding: 2%;
-  width: 70vw;
+  width: 80vw;
   background: #e2dede;
   box-shadow: 0.5rem 0.6rem 1rem 0.1rem #969696;
   font-style: italic;
@@ -61,7 +62,7 @@ html {
 }
 
 .loginform {
-  border: 0.5px solid black;
+  /* border: 0.5px solid black; */
   padding: 2%;
   margin: 3% 3%;
   text-align: center;
@@ -71,21 +72,44 @@ html {
   border-radius: 0.5rem;
 }
 
+.loginform:hover {
+  background-color: #c7c5c591;
+  box-shadow: 0.5rem 0.4rem 1rem 0.1rem #6f6f6f;
+}
+
 .btn {
   background-color: #415cf2;
   max-width: fit-content;
   color: white;
-  padding: 1.5%;
+  padding: 1.2%;
   text-transform: uppercase;
   border-radius: 0.5rem;
   box-shadow: 0.5rem 0.4rem 1rem 0.1rem #969696;
 }
 
-.btn:hover {
+.btn-small {
+  background-color: #4f1a0e;
+  max-width: fit-content;
+  color: white  ;
+  padding: 1%;
+  font-size: 5;
+  text-transform: uppercase;
+  border-radius: 0.5rem;
+  box-shadow: 0.5rem 0.4rem 1rem 0.1rem #969696;
+}
+
+.btn:hover,
+.btn-small:hover {
   background-color: #1638fa;
 }
 
-input {
+.btn-warning {
+  background-color: rgb(169, 22, 22);
+  color: white;
+  border-radius: 0.5rem;
+}
+
+input, button {
   margin: 2% 2% 2% 2%;
 }
 
@@ -127,4 +151,11 @@ label {
 
 .info-right {
   float: right;
+}
+
+.blogDetail {
+  border: 1px solid black;
+  margin: 2% 2% 2% 2%;
+  padding: 2%;
+  max-width: fit-content;
 }

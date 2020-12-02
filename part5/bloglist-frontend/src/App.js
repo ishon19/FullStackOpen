@@ -100,9 +100,29 @@ const App = () => {
       setURL("");
       setAuthor("");
       //update the blog list
-      blogService.getAll().then((blogs) => setBlogs(blogs));
+      setBlogs(await blogService.getAll());
     } catch (error) {
       displayNotification("error", "Unable to post this blog..");
+    }
+  };
+
+  const updateLikeHandler = async (id) => {
+    try {
+      await blogService.updateBlog(id);
+      setBlogs(await blogService.getAll());
+      displayNotification("success", "Updated Blog List");
+    } catch (error) {
+      displayNotification("error", "Unable to update likes for this blog..");
+    }
+  };
+
+  const deletePostHandler = async (id) => {
+    try {
+      await blogService.deleteBlog(id);
+      setBlogs(await blogService.getAll());
+      displayNotification("success", "Updated Blog List");
+    } catch (error) {
+      displayNotification("error", "Unable to delete this blog..");
     }
   };
 
@@ -126,7 +146,12 @@ const App = () => {
           </div>
           <div className="card">
             {blogs.map((blog) => (
-              <Blog key={blog.id} blog={blog} />
+              <Blog
+                key={blog.id}
+                blog={blog}
+                updateLikes={updateLikeHandler}
+                deletePostHandler={deletePostHandler}
+              />
             ))}
           </div>
           <AddBlog

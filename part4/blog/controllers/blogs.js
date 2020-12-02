@@ -47,6 +47,7 @@ blogsRouter.delete("/:id", async (request, response) => {
 
   //check if a valid token exists for the user
   const token = request.token;
+  console.log("[DELETE] Token: ", token);
   if (!token) {
     return response.status(401).json({ error: "token missing" });
   }
@@ -69,18 +70,45 @@ blogsRouter.delete("/:id", async (request, response) => {
 });
 
 blogsRouter.put("/:id", async (request, response) => {
-  const body = request.body;
+  const blogIdToUpdate = request.params.id;
 
-  const blog = {
-    title: body.title,
-    author: body.author,
-    url: body.url,
-    likes: body.likes,
+  //check if a valid token exists for the user
+  const token = request.token;
+  console.log("Token: ", token);
+  if (!token) {
+    return response.status(401).json({ error: "token missing" });
+  }
+  const decodedToken = await jwt.verify(token, process.env.SECRET);
+
+  //search the blog and find if the user was the creator of the  post
+  const blog = await Blog.findById(blogIdToUpdate);
+  console.log("Blog: ", blog);
+
+  //the the decoded userid and the blog creators id match then only proceed
+  if (
+    decodedToken.id.toString().toLowerCase() !==
+    blog.user.toString().toLowerCase()
+  ) {
+    return response
+      .status(401)
+      .json({ error: "user not authorized to like posts" });
+  }
+
+  const updatedBlog = {
+    title: blog.title,
+    author: blog.author,
+    url: blog.url,
+    likes: blog.likes + 1,
+    user: blog.user,
   };
 
-  const updatedNote = await Blog.findByIdAndUpdate(request.params.id, blog, {
-    new: true,
-  });
+  const updatedNote = await Blog.findByIdAndUpdate(
+    request.params.id,
+    updatedBlog,
+    {
+      new: true,
+    }
+  );
   response.status(204).json(updatedNote);
 });
 
