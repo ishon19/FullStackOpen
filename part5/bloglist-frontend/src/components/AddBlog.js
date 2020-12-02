@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 
 const AddBlog = ({
   title,
@@ -44,5 +45,15 @@ const AddBlog = ({
     </div>
   </>
 );
+
+AddBlog.propTypes = {
+  title: PropTypes.string.isRequired,
+  author: PropTypes.string.isRequired,
+  url: PropTypes.string.isRequired,
+  titleChangerHandler: PropTypes.func.isRequired,
+  authorChangeHandler: PropTypes.func.isRequired,
+  urlChangeHandler: PropTypes.func.isRequired,
+  addBlogHandler: PropTypes.func.isRequired,
+};
 
 export default AddBlog;
