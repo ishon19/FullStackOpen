@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import React, { useState } from "react";
 
 const Blog = ({ blog, updateLikes, deletePostHandler }) => {
@@ -7,7 +8,7 @@ const Blog = ({ blog, updateLikes, deletePostHandler }) => {
   return (
     <div>
       <li>
-        {blog.title}
+        <div className="defaultContent">{blog.title} {blog.author}</div>
         <button className="btn" onClick={() => setVisible(!visible)}>
           {!visible ? "View" : "Hide"}
         </button>
@@ -19,8 +20,6 @@ const Blog = ({ blog, updateLikes, deletePostHandler }) => {
           <button className="btn-small" onClick={() => updateLikes(blog.id)}>
             Like
           </button>
-          <br />
-          <b>Author</b> {blog.author}
           <br />
           <button
             className="btn-warning"

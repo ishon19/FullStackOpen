@@ -13,12 +13,14 @@ const Login = ({
       <input
         type="text"
         name="Username"
+        value={username}
         onChange={usernameChangeHandler}
       />
       <br />
       <label>Password</label>
       <input
         type="password"
+        value={password}
         name="Password"
         onChange={passwordChangeHandler}
       />
