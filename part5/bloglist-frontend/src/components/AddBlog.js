@@ -17,6 +17,7 @@ const AddBlog = ({
         <label>Title</label>
         <input
           type="text"
+          id="title"
           placeholder="Title"
           value={title}
           onChange={titleChangerHandler}
@@ -25,6 +26,7 @@ const AddBlog = ({
         <label>Author</label>
         <input
           type="text"
+          id="author"
           placeholder="Author"
           value={author}
           onChange={authorChangeHandler}
@@ -34,6 +36,7 @@ const AddBlog = ({
         <input
           type="text"
           placeholder="URL"
+          id="url"
           value={url}
           onChange={urlChangeHandler}
         />
