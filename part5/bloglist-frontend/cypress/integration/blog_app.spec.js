@@ -93,10 +93,20 @@ describe("Blog App", function () {
       cy.get("#username").type("shreyans");
       cy.get("#password").type("mypass");
       cy.get("#login-btn").click();
-      cy.request("GET", "http://localhost:3001/api/blogs").then(({ body }) => {
-        const blogs = body;
-        expect(blogs[1].likes).to.be.greaterThan(blogs[0].likes);
-      });
+      cy.get(":nth-child(1) > li > .btn").click();
+      cy.get("li:first> .blogDetail > #like-btn").click();
+      cy.get("li:first> .blogDetail > #like-btn").click();
+      cy.get(":nth-child(2) > li > .btn").click();
+      cy.get("li:last> .blogDetail > #like-btn")
+        .click()
+        .then(function () {
+          cy.request("GET", "http://localhost:3001/api/blogs").then(
+            ({ body }) => {
+              const blogs = body;
+              expect(blogs[1].likes).to.be.greaterThan(blogs[0].likes);
+            }
+          );
+        });
     });
   });
 });
