@@ -140,7 +140,6 @@ const App = () => {
             </div>
             <div className="info-right">
               Welcome, {JSON.parse(localStorage.getItem("loggedInUser")).name}!
-              {"  "}
               <button onClick={logout}>Logout</button>
             </div>
           </div>

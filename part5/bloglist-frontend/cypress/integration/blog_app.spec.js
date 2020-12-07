@@ -1,6 +1,5 @@
 describe("Blog App", function () {
   beforeEach(function () {
-    debugger;
     cy.request("POST", "http://localhost:3001/api/testing/reset");
     const testUser = {
       name: "Shreyans Pathak",
@@ -33,6 +32,7 @@ describe("Blog App", function () {
 
   describe.only("When logged in", function () {
     beforeEach(function () {
+      console.log("LOG IN");
       cy.login({ username: "shreyans", password: "mypass" });
     });
 
@@ -75,6 +75,28 @@ describe("Blog App", function () {
       expect(
         JSON.parse(localStorage.getItem("loggedInUser")).username
       ).to.contain("shreyans");
+    });
+
+    it("blogs are posted in order of likes", function () {
+      cy.createBlog({
+        title: "Delete Me!",
+        author: "Cypress",
+        likes: 3,
+        url: "http://localhost.com",
+      });
+      cy.createBlog({
+        title: "Delete Me!",
+        author: "Cypress",
+        likes: 2,
+        url: "http://localhost.com",
+      });
+      cy.get("#username").type("shreyans");
+      cy.get("#password").type("mypass");
+      cy.get("#login-btn").click();
+      cy.request("GET", "http://localhost:3001/api/blogs").then(({ body }) => {
+        const blogs = body;
+        expect(blogs[1].likes).to.be.greaterThan(blogs[0].likes);
+      });
     });
   });
 });
