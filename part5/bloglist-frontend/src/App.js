@@ -27,13 +27,13 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
-  useEffect(() => {
+/*   useEffect(() => {
     if (window.localStorage.getItem("loggedInUser")) {
       const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
       setLoggedIn(true);
       blogService.setToken(loggedInUser.token);
     }
-  }, []);
+  }, []); */
 
   const handleLogin = async (event) => {
     event.preventDefault();
