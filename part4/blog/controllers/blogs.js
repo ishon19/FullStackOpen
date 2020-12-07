@@ -7,6 +7,8 @@ const jwt = require("jsonwebtoken");
 
 blogsRouter.get("/", async (request, response) => {
   const blogs = await Blog.find({}).populate("user");
+  //sorting the blogs based on likes
+  blogs.sort((a, b) => a.likes - b.likes);
   response.json(blogs);
 });
 

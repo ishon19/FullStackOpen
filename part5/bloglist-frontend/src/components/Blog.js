@@ -17,7 +17,7 @@ const Blog = ({ blog, updateLikes, deletePostHandler }) => {
           <b>Link</b> <a href={blog.url}>{blog.url}</a>
           <br />
           <b>Likes</b> {blog.likes}{" "}
-          <button className="btn-small" onClick={() => updateLikes(blog.id)}>
+          <button id="like-btn" className="btn-small" onClick={() => updateLikes(blog.id)}>
             Like
           </button>
           <br />
