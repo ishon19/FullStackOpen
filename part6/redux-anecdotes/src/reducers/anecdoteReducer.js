@@ -24,6 +24,13 @@ export const updateVoteAction = (id) => {
   };
 };
 
+export const addAnecdoteAction = (anecdote) => {
+  return {
+    type: "ADD_ANECDOTE",
+    anecdote,
+  };
+};
+
 const initialState = anecdotesAtStart.map(asObject);
 
 const reducer = (state = initialState, action) => {
@@ -37,8 +44,10 @@ const reducer = (state = initialState, action) => {
         }
         return anecdote;
       });
+    case "ADD_ANECDOTE":
+      return state.concat(asObject(action.anecdote));
     default:
-      return state;
+      return state.sort((a, b) => a.votes - b.votes);
   }
 };
 
