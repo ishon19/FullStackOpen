@@ -31,9 +31,16 @@ export const addAnecdoteAction = (anecdote) => {
   };
 };
 
+export const initAnecdotes = (anecdotes) => {
+  return {
+    type: "INIT_ANECDOTES",
+    anecdotes,
+  };
+};
+
 const initialState = anecdotesAtStart.map(asObject);
 
-const reducer = (state = initialState, action) => {
+const reducer = (state = [], action) => {
   console.log("state now: ", state);
   console.log("action", action);
   switch (action.type) {
@@ -45,7 +52,10 @@ const reducer = (state = initialState, action) => {
         return anecdote;
       });
     case "ADD_ANECDOTE":
-      return state.concat(asObject(action.anecdote));
+      //return state.concat(asObject(action.anecdote));
+      return state.concat(action.anecdote);
+    case "INIT_ANECDOTES":
+      return action.anecdotes;
     default:
       return state.sort((a, b) => a.votes - b.votes);
   }
