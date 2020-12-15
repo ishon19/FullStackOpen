@@ -2,23 +2,18 @@
   "anecdotes": [
     {
       "content": "If it hurts, do it more often",
-      "votes": 0,
+      "votes": 2,
       "id": 1
     },
     {
       "content": "Adding manpower to a late software project makes it later!",
-      "votes": 0,
+      "votes": 1,
       "id": 2
     },
     {
       "content": "Hard time lets  you know who your real friends are",
-      "votes": 0,
+      "votes": 1,
       "id": 3
-    },
-    {
-      "content": "I will do this",
-      "votes": 0,
-      "id": 4
     }
   ]
 }

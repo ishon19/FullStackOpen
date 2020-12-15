@@ -11,9 +11,7 @@ const App = () => {
   const dispatch = useDispatch();
   //fetch all the anecdotes from the server
   useEffect(() => {
-    anecdotes
-      .getAnecdotes()
-      .then((anecdoteList) => dispatch(initAnecdotes(anecdoteList)));
+    dispatch(initAnecdotes());
   }, [dispatch]);
 
   return (

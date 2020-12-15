@@ -13,4 +13,11 @@ const addAnecdote = async (anecdote) => {
   return response.data;
 };
 
-export default { getAnecdotes, addAnecdote };
+const upvote = async (id) => {
+  const getBlogById = await axios.get(`${baseUrl}/${id}`);
+  const updatedBlog = { ...getBlogById.data, votes: getBlogById.data.votes + 1 };
+  const response = await axios.put(`${baseUrl}/${id}`, updatedBlog);
+  return response.data;
+};
+
+export default { getAnecdotes, addAnecdote, upvote };

@@ -6,11 +6,10 @@ import anecdotes from "../services/anecdotes";
 const AnecdoteForm = () => {
   const dispatch = useDispatch();
 
-  const addAnecdote =  async (event) => {
+  const addAnecdote = async (event) => {
     event.preventDefault();
     const anecdote = event.target.anecdote.value;
-    const newAnecdote = await anecdotes.addAnecdote(anecdote);
-    dispatch(addAnecdoteAction(newAnecdote));
+    dispatch(addAnecdoteAction(anecdote));
   };
 
   return (

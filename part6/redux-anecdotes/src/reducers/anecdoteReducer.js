@@ -1,3 +1,5 @@
+import anecdoteService from "../services/anecdotes";
+
 const anecdotesAtStart = [
   "If it hurts, do it more often",
   "Adding manpower to a late software project makes it later!",
@@ -18,23 +20,33 @@ const asObject = (anecdote) => {
 };
 
 export const updateVoteAction = (id) => {
-  return {
-    type: "UPDATE_VOTES",
-    id,
+  return async (dispatch) => {
+    await anecdoteService.upvote(id);
+    dispatch({
+      type: "UPDATE_VOTES",
+      id,
+    });
   };
 };
 
 export const addAnecdoteAction = (anecdote) => {
-  return {
-    type: "ADD_ANECDOTE",
-    anecdote,
+  return async (dispatch) => {
+    const newAnecdote = await anecdoteService.addAnecdote(anecdote);
+    dispatch({
+      type: "ADD_ANECDOTE",
+      newAnecdote,
+    });
   };
 };
 
-export const initAnecdotes = (anecdotes) => {
-  return {
-    type: "INIT_ANECDOTES",
-    anecdotes,
+export const initAnecdotes = () => {
+  return async (dispatch) => {
+    const initialAnecdotes = await anecdoteService.getAnecdotes();
+    console.log("INIT: ", initialAnecdotes);
+    dispatch({
+      type: "INIT_ANECDOTES",
+      anecdotes: initialAnecdotes,
+    });
   };
 };
 
