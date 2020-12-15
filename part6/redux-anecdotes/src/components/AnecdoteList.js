@@ -29,9 +29,8 @@ const AnecdoteList = () => {
         `You upvoted '${
           anecdotes.find((anecdote) => anecdote.id === id).content
         }'`
-      )
+      ,3)
     );
-    setTimeout(() => dispatch(removeNotificationAction()), 5000);
   };
 
   return (

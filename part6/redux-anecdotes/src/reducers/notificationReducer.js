@@ -1,9 +1,14 @@
 const initialState = null;
 
-export const notificationAction = (message) => {
-  return {
-    type: "INFO",
-    message,
+export const notificationAction = (message, timeout) => {
+  return async (dispatch) => {
+    dispatch({
+      type: "INFO",
+      message,
+    });
+    setTimeout(() => {
+      dispatch(removeNotificationAction());
+    }, timeout * 1000);
   };
 };
 
