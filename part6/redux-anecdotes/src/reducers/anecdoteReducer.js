@@ -65,7 +65,7 @@ const reducer = (state = [], action) => {
       });
     case "ADD_ANECDOTE":
       //return state.concat(asObject(action.anecdote));
-      return state.concat(action.anecdote);
+      return state.concat(action.newAnecdote);
     case "INIT_ANECDOTES":
       return action.anecdotes;
     default:

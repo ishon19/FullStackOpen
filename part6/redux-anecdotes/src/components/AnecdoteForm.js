@@ -1,15 +1,15 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { connect } from "react-redux";
 import { addAnecdoteAction } from "../reducers/anecdoteReducer";
 import anecdotes from "../services/anecdotes";
 
-const AnecdoteForm = () => {
-  const dispatch = useDispatch();
+const AnecdoteForm = (props) => {
+  //const dispatch = useDispatch();
 
   const addAnecdote = async (event) => {
     event.preventDefault();
     const anecdote = event.target.anecdote.value;
-    dispatch(addAnecdoteAction(anecdote));
+    props.addAnecdoteAction(anecdote);
   };
 
   return (
@@ -25,4 +25,8 @@ const AnecdoteForm = () => {
   );
 };
 
-export default AnecdoteForm;
+const mapDispatchToProps = {
+  addAnecdoteAction,
+};
+
+export default connect(null, mapDispatchToProps)(AnecdoteForm);
