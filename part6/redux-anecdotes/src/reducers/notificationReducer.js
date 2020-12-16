@@ -1,4 +1,5 @@
 const initialState = null;
+var timerId = null;
 
 export const notificationAction = (message, timeout) => {
   return async (dispatch) => {
@@ -6,13 +7,14 @@ export const notificationAction = (message, timeout) => {
       type: "INFO",
       message,
     });
-    setTimeout(() => {
-      dispatch(removeNotificationAction());
+    timerId = setTimeout(() => {
+      dispatch(removeNotificationAction(timerId));
     }, timeout * 1000);
   };
 };
 
 export const removeNotificationAction = () => {
+  clearTimeout(timerId);
   return {
     type: "HIDE_INFO",
   };
