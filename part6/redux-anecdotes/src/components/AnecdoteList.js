@@ -1,13 +1,13 @@
 import React from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch, connect } from "react-redux";
 import { updateVoteAction } from "../reducers/anecdoteReducer";
 import {
   notificationAction,
   removeNotificationAction,
 } from "../reducers/notificationReducer";
 
-const AnecdoteList = () => {
-  const anecdotes = useSelector((state) => {
+const AnecdoteList = (props) => {
+  /* const anecdotes = useSelector((state) => {
     if (state.filter) {
       return state.anecdotes.filter((anecdote) =>
         anecdote.content
@@ -17,26 +17,34 @@ const AnecdoteList = () => {
       );
     }
     return state.anecdotes.sort((a, b) => b.votes - a.votes);
-  });
+  }); */
 
-  const dispatch = useDispatch();
+  //const dispatch = useDispatch();
 
   const vote = (id) => {
     console.log("vote", id);
-    dispatch(updateVoteAction(id));
+    /* dispatch(updateVoteAction(id));
     dispatch(
       notificationAction(
         `You upvoted '${
           anecdotes.find((anecdote) => anecdote.id === id).content
-        }'`
-      ,3)
+        }'`,
+        3
+      )
+    ); */
+    props.updateVoteAction(id);
+    props.notificationAction(
+      `You upvoted '${
+        props.anecdotes.find((anecdote) => anecdote.id === id).content
+      }'`,
+      3
     );
   };
 
   return (
     <div>
-      {console.log(anecdotes)}
-      {anecdotes.map((anecdote) => (
+      {console.log(props.anecdotes)}
+      {props.anecdotes.map((anecdote) => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div>
@@ -49,4 +57,23 @@ const AnecdoteList = () => {
   );
 };
 
-export default AnecdoteList;
+const mapStateToProps = (state) => {
+  if (state.filter) {
+    return {
+      anecdotes: state.anecdotes.filter((anecdote) =>
+        anecdote.content
+          .toLowerCase()
+          .trim()
+          .includes(state.filter.toLowerCase().trim())
+      ),
+    };
+  }
+  return {anecdotes: state.anecdotes.sort((a, b) => b.votes - a.votes)};
+};
+
+const mapDispatchToProps = {
+  updateVoteAction,
+  notificationAction,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AnecdoteList);
