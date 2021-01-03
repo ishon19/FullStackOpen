@@ -85,6 +85,7 @@ const CreateNew = (props) => {
   const info = useField("info");
 
   const handleSubmit = (e) => {
+    console.log("Submit triggered");
     e.preventDefault();
     const toAdd = {
       votes: 0,
@@ -93,6 +94,14 @@ const CreateNew = (props) => {
       info: info.value,
     };
     props.addNew(toAdd);
+  };
+
+  const handleReset = (e) => {
+    console.log("Reset triggered");
+    e.preventDefault();
+    content.onReset();
+    info.onReset();
+    author.onReset();
   };
 
   return (
@@ -111,8 +120,9 @@ const CreateNew = (props) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
       </form>
+      <button onClick={handleReset}>reset</button>
     </div>
   );
 };
