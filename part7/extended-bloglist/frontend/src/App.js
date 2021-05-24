@@ -1,3 +1,4 @@
+import { Box } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import AddBlog from "./components/AddBlog";
 import Blog from "./components/Blog";
@@ -27,7 +28,7 @@ const App = () => {
     blogService.getAll().then((blogs) => setBlogs(blogs));
   }, []);
 
-/*   useEffect(() => {
+  /*   useEffect(() => {
     if (window.localStorage.getItem("loggedInUser")) {
       const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
       setLoggedIn(true);
@@ -127,10 +128,7 @@ const App = () => {
   };
 
   return (
-    <div>
-      <div className="App-header">
-        <h1>Blogs App</h1>
-      </div>
+    <Box marginTop="100px">
       <Notification type={messageType} message={message} />
       {loggedIn ? (
         <>
@@ -170,7 +168,7 @@ const App = () => {
           passwordChangeHandler={handlePasswordChange}
         />
       )}
-    </div>
+    </Box>
   );
 };
 
