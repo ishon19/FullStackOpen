@@ -5,7 +5,7 @@ const Blog = require("../models/blog");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
-blogsRouter.get("/", async (request, response) => {
+blogsRouter.get("/", async (_request, response) => {
   const blogs = await Blog.find({}).populate("user");
   //sorting the blogs based on likes
   blogs.sort((a, b) => a.likes - b.likes);
@@ -76,11 +76,12 @@ blogsRouter.put("/:id", async (request, response) => {
 
   //check if a valid token exists for the user
   const token = request.token;
-  console.log("Token: ", token);
+  console.log("[PUT] Token: ", token);
   if (!token) {
     return response.status(401).json({ error: "token missing" });
   }
   const decodedToken = await jwt.verify(token, process.env.SECRET);
+  console.log("Decoded token: ", decodedToken);
 
   //search the blog and find if the user was the creator of the  post
   const blog = await Blog.findById(blogIdToUpdate);

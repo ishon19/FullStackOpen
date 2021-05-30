@@ -1,4 +1,4 @@
-import { Box } from "@material-ui/core";
+import { Box, Button, Grid, Typography } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import AddBlog from "./components/AddBlog";
 import Blog from "./components/Blog";
@@ -9,7 +9,9 @@ import loginService from "./services/login";
 
 const App = () => {
   const [blogs, setBlogs] = useState([]);
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(
+    JSON.parse(window.localStorage.getItem("loggedInUser"))?.token
+  );
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [title, setTitle] = useState("");
@@ -36,8 +38,7 @@ const App = () => {
     }
   }, []); */
 
-  const handleLogin = async (event) => {
-    event.preventDefault();
+  const handleLogin = async () => {
     if (!username || !password) {
       displayNotification("error", "Please enter the username & password!");
       return;
@@ -48,7 +49,8 @@ const App = () => {
       window.localStorage.setItem("loggedInUser", JSON.stringify(user));
       blogService.setToken(user.token);
       setLoggedIn(true);
-      displayNotification("success", `Welcome, ${user.name}!`);
+      console.log("Response from server, ", user);
+      displayNotification("success", `Welcome, ${user.username}!`);
     } catch (error) {
       console.log(error);
       displayNotification("error", "Login Failed");
@@ -131,17 +133,19 @@ const App = () => {
     <Box marginTop="100px">
       <Notification type={messageType} message={message} />
       {loggedIn ? (
-        <>
-          <div className="info">
-            <div className="info-left">
-              <b>Blog List</b>
-            </div>
-            <div className="info-right">
-              {/* Welcome, {JSON.parse(localStorage.getItem("loggedInUser")).name}! */}
-              <button onClick={logout}>Logout</button>
-            </div>
-          </div>
-          <div className="card">
+        <Grid container direction="column" spacing={6}>
+          <Grid item container direction="row" justify="space-between">
+            <Grid>
+              <Typography variant="h5">Blog List</Typography>
+            </Grid>
+            {/* Welcome, {JSON.parse(localStorage.getItem("loggedInUser")).name}! */}
+            <Grid>
+              <Button variant="outlined" onClick={logout}>
+                Logout
+              </Button>
+            </Grid>
+          </Grid>
+          <Grid item container direction="column">
             {blogs.map((blog) => (
               <Blog
                 key={blog.id}
@@ -150,17 +154,19 @@ const App = () => {
                 deletePostHandler={deletePostHandler}
               />
             ))}
-          </div>
-          <AddBlog
-            title={title}
-            author={author}
-            url={url}
-            titleChangerHandler={handleTitleChange}
-            authorChangeHandler={handleAuthorChange}
-            urlChangeHandler={handleURLChange}
-            addBlogHandler={submitNewBlog}
-          />
-        </>
+          </Grid>
+          <Grid item>
+            <AddBlog
+              title={title}
+              author={author}
+              url={url}
+              titleChangerHandler={handleTitleChange}
+              authorChangeHandler={handleAuthorChange}
+              urlChangeHandler={handleURLChange}
+              addBlogHandler={submitNewBlog}
+            />
+          </Grid>
+        </Grid>
       ) : (
         <LoginView
           loginHandler={handleLogin}
